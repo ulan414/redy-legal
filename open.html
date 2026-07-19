@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- Страница share-ссылок Redy: /open?activity=<id> или /open?venue=<id>.
+     Пробует открыть приложение по схеме redy://…; если оно не установлено,
+     показывает кнопку Google Play. Задеплоить в репозиторий redy-legal
+     (ulan414.github.io/redy-legal) рядом с index.html. -->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redy — открыть в приложении</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; text-align: center;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #16171D; color: #fff;
+  }
+  .card { padding: 32px 24px; max-width: 340px; }
+  .logo {
+    width: 72px; height: 72px; border-radius: 20px; background: #E93C35;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 34px; font-weight: 800; color: #fff;
+  }
+  h1 { font-size: 20px; margin: 0 0 8px; }
+  p  { font-size: 14px; color: #9AA0AC; margin: 0 0 24px; line-height: 1.5; }
+  a.btn {
+    display: block; padding: 14px 20px; border-radius: 14px;
+    background: #E93C35; color: #fff; font-weight: 600;
+    text-decoration: none; font-size: 15px; margin-bottom: 10px;
+  }
+  a.ghost { background: transparent; border: 1px solid #3a3b45; color: #fff; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">R</div>
+  <h1>Открываем в Redy…</h1>
+  <p>Если приложение не открылось само — установите его или попробуйте ещё раз.</p>
+  <a class="btn" id="openBtn" href="#">Открыть в приложении</a>
+  <a class="btn ghost" href="https://play.google.com/store/apps/details?id=kz.redy.app">Скачать в Google Play</a>
+</div>
+<script>
+  // ?activity=<id> → redy://activity/<id>; ?venue=<id> → redy://venue/<id>
+  var q = new URLSearchParams(location.search);
+  var target = null;
+  if (q.get('activity')) target = 'redy://activity/' + encodeURIComponent(q.get('activity'));
+  else if (q.get('venue')) target = 'redy://venue/' + encodeURIComponent(q.get('venue'));
+
+  var btn = document.getElementById('openBtn');
+  if (target) {
+    btn.href = target;
+    // сразу пробуем открыть приложение; если его нет, браузер просто
+    // останется на этой странице с кнопками
+    setTimeout(function () { location.href = target; }, 60);
+  } else {
+    btn.style.display = 'none';
+  }
+</script>
+</body>
+</html>
